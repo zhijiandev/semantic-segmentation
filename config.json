@@ -1,0 +1,84 @@
+{
+    "name": "DeepLab",
+    "device": "cuda:3",
+    "n_gpu": 1,
+    "prefetch": false,
+    "use_synch_bn": false,
+
+    "arch": {
+        "type": "DeepLab",
+        "args": {
+            "backbone": "xception",
+            "freeze_bn": false,
+            "freeze_backbone": false,
+            "use_aux": false
+        }
+    },
+
+    "train_loader": {
+        "type": "VOC",
+        "args":{
+            "num_classes": 2,
+            "data_dir": "/home/luzx/dataset/semanticsegmentation/wheatstriprust",
+            "batch_size": 4,
+            "base_size": 256,
+            "crop_size": 256,
+            "augment": true,
+            "shuffle": true,
+            "scale": true,
+            "flip": true,
+            "rotate": true,
+            "blur": false,
+            "split": "train",
+            "num_workers": 4,
+            "drop_last": true
+        }
+    },
+
+    "val_loader": {
+        "type": "VOC",
+        "args":{
+            "num_classes": 2,
+            "data_dir": "/home/luzx/dataset/semanticsegmentation/wheatstriprust",
+            "batch_size": 4,
+            "crop_size": 256,
+            "val": true,
+            "split": "val",
+            "num_workers": 4,
+            "drop_last": false
+        }
+    },
+
+    "optimizer": {
+        "type": "SGD",
+        "differential_lr": true,
+        "args":{
+            "lr": 0.01,
+            "weight_decay": 1e-4,
+            "momentum": 0.9
+        }
+    },
+
+    "loss": "CrossEntropyLoss2d",
+    "ignore_index": 255,
+    "lr_scheduler": {
+        "type": "Poly",
+        "args": {}
+    },
+
+    "trainer": {
+        "epochs": 80,
+        "save_dir": "saved/",
+        "save_period": 10,
+  
+        "monitor": "max Mean_IoU",
+        "early_stop": 10,
+        
+        "tensorboard": true,
+        "log_dir": "saved/runs",
+        "log_per_iter": 20,
+
+        "val": true,
+        "val_per_epochs": 5
+    }
+}
