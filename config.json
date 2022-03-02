@@ -1,14 +1,14 @@
 {
-    "name": "DeepLab",
-    "device": "cuda:3",
+    "name": "PSPNet",
+    "device": "cuda:0",
     "n_gpu": 1,
     "prefetch": false,
     "use_synch_bn": false,
 
     "arch": {
-        "type": "DeepLab",
+        "type": "PSPNet",
         "args": {
-            "backbone": "xception",
+            "backbone": "resnet50",
             "freeze_bn": false,
             "freeze_backbone": false,
             "use_aux": false
@@ -18,19 +18,19 @@
     "train_loader": {
         "type": "VOC",
         "args":{
-            "num_classes": 2,
-            "data_dir": "/home/luzx/dataset/semanticsegmentation/wheatstriprust",
-            "batch_size": 4,
-            "base_size": 256,
-            "crop_size": 256,
+            "num_classes": 5,
+            "data_dir": "/home/czj/dataset/DUT-USEG",
+            "batch_size": 2,
+            "base_size": 512,
+            "crop_size": 512,
             "augment": true,
             "shuffle": true,
             "scale": true,
             "flip": true,
             "rotate": true,
             "blur": false,
-            "split": "train",
-            "num_workers": 4,
+            "split": "labeled_train",
+            "num_workers": 2,
             "drop_last": true
         }
     },
@@ -38,13 +38,13 @@
     "val_loader": {
         "type": "VOC",
         "args":{
-            "num_classes": 2,
-            "data_dir": "/home/luzx/dataset/semanticsegmentation/wheatstriprust",
-            "batch_size": 4,
-            "crop_size": 256,
+            "num_classes": 5,
+            "data_dir": "/home/czj/dataset/DUT-USEG",
+            "batch_size": 2,
+            "crop_size": 512,
             "val": true,
             "split": "val",
-            "num_workers": 4,
+            "num_workers": 2,
             "drop_last": false
         }
     },
@@ -67,7 +67,7 @@
     },
 
     "trainer": {
-        "epochs": 80,
+        "epochs": 150,
         "save_dir": "saved/",
         "save_period": 10,
   

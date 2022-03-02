@@ -23,11 +23,11 @@ class VOCDataset(BaseDataSet):
         super(VOCDataset, self).__init__(**kwargs)
 
     def _set_files(self):
-        self.root = os.path.join(self.root, 'voc2012')
+        self.root = os.path.join(self.root, '')
         self.image_dir = os.path.join(self.root, 'JPEGImages')
         self.label_dir = os.path.join(self.root, 'SegmentationClass')
 
-        file_list = os.path.join(self.root, "ImageSets/Segmentation", self.split + ".txt")
+        file_list = os.path.join(self.root, "ImageSets", self.split + ".txt")
         self.files = [line.rstrip() for line in tuple(open(file_list, "r"))]
     
     def _load_data(self, index):
@@ -51,9 +51,9 @@ class VOCAugDataset(BaseDataSet):
         super(VOCAugDataset, self).__init__(**kwargs)
 
     def _set_files(self):
-        self.root = os.path.join(self.root, 'voc2012')
+        self.root = os.path.join(self.root, '')
 
-        file_list = os.path.join(self.root, "ImageSets/Segmentation", self.split + ".txt")
+        file_list = os.path.join(self.root, "ImageSets", self.split + ".txt")
         file_list = [line.rstrip().split(' ') for line in tuple(open(file_list, "r"))]
         self.files, self.labels = list(zip(*file_list))
     
@@ -91,7 +91,7 @@ class VOC(BaseDataLoader):
     
         if split in ["train_aug", "trainval_aug", "val_aug", "test_aug"]:
             self.dataset = VOCAugDataset(num_classes=num_classes, **kwargs)
-        elif split in ["train", "trainval", "val", "test"]:
+        elif split in ["train", "trainval", "val", "test", "labeled_train"]:
             self.dataset = VOCDataset(num_classes=num_classes, **kwargs)
         else: raise ValueError(f"Invalid split name {split}")
         super(VOC, self).__init__(self.dataset, batch_size, shuffle, num_workers, drop_last, val_split)
